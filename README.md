@@ -1,126 +1,55 @@
-🏥 Diabetes Patient Readmission — Healthcare Analytics Project
+# Diabetes Patient Readmission Risk Analysis
 
-📌 Project Overview
+## Overview
 
-This healthcare analytics project evaluates inpatient diabetes encounters to uncover patterns driving hospital readmissions and resource utilization. The goal is not just reporting metrics, but identifying meaningful risk signals that support smarter operational and clinical decision-making.
-The dataset includes 102,000+ hospital encounters, enabling large-scale analysis of readmission behavior across patient demographics and medical specialties.
-This project demonstrates a complete analytics workflow — from structured data preparation to decision-focused dashboard insights.
+Analyzed 102,000+ diabetic patient encounters from 130 US hospitals to find patterns behind 30-day hospital readmissions. Worked across SQL, Python and Power BI to clean the data, run KPI analysis and build an interactive dashboard.
 
 ---
 
-🎯 Objectives
+## Dataset
 
-✔ Identify high-risk patient groups linked to readmission
-✔ Compare specialty-level readmission performance
-✔ Evaluate the relationship between hospital stay and readmission
-✔ Highlight utilization pressure across departments
-✔ Translate analytics into actionable operational insights
+- **Source:** Kaggle — Diabetes 130-US Hospitals (1999–2008)
+- **Link:** https://www.kaggle.com/datasets/brandao/diabetes
+- **Size:** 102,000+ hospital encounters across 10 years
 
----
-
-📊 Dataset Summary
-
-- 📦 Total encounters: 102,000+
-- ⏱ Average length of stay: 4.4 days
-- 🔁 Readmitted encounters: ~11,000
-- 📈 Overall readmission rate: 11.16%
-
-Key analytical dimensions:
-
-- Patient age groups
-- Medical specialties
-- Encounter utilization
-- Length of stay
-- Admission characteristics
+Columns used in analysis: `patient_nbr`, `age`, `admission_type_id`, `discharge_disposition_id`, `time_in_hospital`, `medical_specialty`, `number_diagnoses`, `change`, `readmitted`
 
 ---
 
-🧠 Analytical Approach
+## What I did
 
-🗂 Data Preparation (SQL)
-
-- Cleaned inconsistent and missing records
-- Standardized specialty categories
-- Filtered low-volume specialties to avoid misleading rates
-- Validated KPI calculations
-
-📐 KPI Design
-
-- Age-based readmission rates
-- Specialty risk vs encounter volume
-- Length-of-stay comparison
-- High-risk utilization indicators
-
-📊 Dashboard Development (Power BI)
-
-Dashboard design prioritized:
-
-- Clear decision signals
-- Comparative analysis
-- Risk visualization
-- Operational interpretation
+- Cleaned the dataset — replaced `?` values, removed duplicate encounters, excluded expired/hospice patients
+- Used SQL to calculate readmission KPIs, age group analysis, specialty level breakdown and risk stratification
+- Used Python (Pandas, Matplotlib) for EDA and visualizations
+- Built a Power BI dashboard with filters for age, gender and medical specialty
 
 ---
 
-🔍 Key Findings
+## Dashboard KPIs
 
-👥 Age-Based Risk Patterns
-
-- Highest readmission rates observed in young adults (20–30) and elderly patients
-- Indicates behavioral vs clinical drivers requiring different interventions
-
-🏥 Specialty Insights
-
-- Certain specialties show disproportionately high readmission risk
-- Large departments contribute most total readmissions due to patient volume
-
-⏳ Utilization Patterns
-
-- Length of stay alone is not a consistent predictor
-- Discharge quality and follow-up planning likely play a stronger role
+| Metric | Value |
+|---|---|
+| Total Encounters | 102K |
+| Avg Length of Stay | 4.40 days |
+| Readmitted Encounters | 11K |
+| Readmission Rate | 11.16% |
 
 ---
 
-🚦 Decision Implications
+## Key Findings
 
-➡ Targeted readmission strategies outperform generalized policies
-➡ Monitoring should focus on high-risk, high-volume specialties
-➡ Age-specific discharge planning improves intervention efficiency
-➡ Resource prioritization should balance risk and utilization
-
----
-
-🛠 Tools Used
-
-- 🗃 SQL — data cleaning, aggregation, KPI calculation
-- 📊 Power BI — dashboard visualization and insight exploration
-- 
-
+- Overall 30-day readmission rate was **11.16%**
+- Age group **[20-30]** had the highest readmission rate
+- **[80-90]** and **[70-80]** also showed high risk
+- Specialties like Hematology/Oncology had highest readmission concentration
+- Length of stay alone was not a strong predictor — discharge planning plays a bigger role
 
 ---
 
-🎯 Project Purpose
+├── diabetes.sql                   — SQL queries
+├── diabetic_analysis.py           — Python EDA script
+├── diabetes.bi.pbix               — Power BI dashboard
+├── readmission_by_age.png         — Readmission rate by age group chart
+├── readmission_by_admission.png   — Readmission rate by admission type chart
+├── IMG_20260213_232330.jpg        — Power BI dashboard screenshot
 
-This work highlights healthcare analytics as a decision-support discipline — transforming raw encounter data into interpretable signals that guide operational improvement.
-
-The focus is on risk identification, utilization awareness, and practical decision framing, reflecting real-world analytics workflows.
-
----
-
-🔮 Future Enhancements
-
-- Predictive readmission modeling
-- Cohort-level patient outcome analysis
-- Intervention impact simulation
-
----
-
-👩‍💻 Author
-
-Healthcare analytics portfolio project focused on readmission risk evaluation and utilization intelligence.
-
----
-
-📜 License
-
-Educational and portfolio demonstration use.
