@@ -46,6 +46,7 @@ Columns used in analysis: `patient_nbr`, `age`, `admission_type_id`, `discharge_
 
 ---
 
+## Files
 ├── diabetes.sql                   — SQL queries
 ├── diabetic_analysis.py           — Python EDA script
 ├── diabetes.bi.pbix               — Power BI dashboard
