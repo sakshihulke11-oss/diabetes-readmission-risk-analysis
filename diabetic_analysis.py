@@ -15,9 +15,11 @@ df.drop(columns=['weight', 'payer_code', 'medical_specialty'], inplace=True)
 # keeping only first encounter per patient
 df = df.drop_duplicates(subset='patient_nbr', keep='first')
 
-# patients who expired or went to hospital can't be readmitted so removing them
-df = df[df['discharge_disposition_id'].isin([11, 13, 14, 19, 20, 21])]
-
+# patients who expired or went to hospice can't be readmitted so removing them
+# FIX: codes 11,13,14,19,20,21 ARE the expired/hospice codes -- the original
+# .isin([...]) with no negation KEPT only those rows instead of excluding
+# them. Added ~ to actually exclude expired/hospice encounters.
+df = df[~df['discharge_disposition_id'].isin([11, 13, 14, 19, 20, 21])]
 print("after cleaning:", df.shape)
 
 # readmission target - 1 means readmitted within 30 days
@@ -26,7 +28,6 @@ df['readmitted_30days'] = df['readmitted'].apply(lambda x: 1 if x == '<30' else 
 total = len(df)
 readmitted = df['readmitted_30days'].sum()
 rate = round(readmitted / total * 100, 2)
-
 print(f"Total Encounters : {total}")
 print(f"Readmitted 30days: {readmitted}")
 print(f"Readmission Rate : {rate}%")
@@ -34,18 +35,17 @@ print(f"Readmission Rate : {rate}%")
 # -----------------------------------------------
 # Age Group Analysis
 # -----------------------------------------------
-
 age_map = {
-    '[0-10)' : 'Child',
-    '[10-20)': 'Teen',
-    '[20-30)': 'Young Adult',
-    '[30-40)': 'Adult',
-    '[40-50)': 'Adult',
-    '[50-60)': 'Middle Age',
-    '[60-70)': 'Senior',
-    '[70-80)': 'Senior',
-    '[80-90)': 'Elderly',
-    '[90-100)': 'Elderly'
+    '[0-10)'   : 'Child',
+    '[10-20)'  : 'Teen',
+    '[20-30)'  : 'Young Adult',
+    '[30-40)'  : 'Adult',
+    '[40-50)'  : 'Adult',
+    '[50-60)'  : 'Middle Age',
+    '[60-70)'  : 'Senior',
+    '[70-80)'  : 'Senior',
+    '[80-90)'  : 'Elderly',
+    '[90-100)' : 'Elderly'
 }
 df['age_group'] = df['age'].map(age_map)
 
@@ -62,7 +62,6 @@ print(age_summary.sort_values('readmission_rate_%', ascending=False))
 # -----------------------------------------------
 # Length of Stay
 # -----------------------------------------------
-
 avg_los = round(df['time_in_hospital'].mean(), 2)
 print(f"\nAverage Length of Stay: {avg_los} days")
 
@@ -79,7 +78,6 @@ print(los_summary)
 # -----------------------------------------------
 # Admission Type Analysis
 # -----------------------------------------------
-
 admission_map = {
     1: 'Emergency',
     2: 'Urgent',
@@ -103,7 +101,6 @@ print(adm_summary.sort_values('readmission_rate_%', ascending=False))
 # High Risk Patient Identification
 # elderly + emergency + long stay
 # -----------------------------------------------
-
 df['high_risk'] = (
     (df['age'].isin(['[70-80)', '[80-90)', '[90-100)'])) &
     (df['admission_type_id'] == 1) &
@@ -112,13 +109,12 @@ df['high_risk'] = (
 
 hr_count = df['high_risk'].sum()
 hr_rate = round(df[df['high_risk'] == 1]['readmitted_30days'].mean() * 100, 2)
-print(f"\nHigh Risk Patients   : {hr_count}")
+print(f"\nHigh Risk Patients : {hr_count}")
 print(f"Their Readmission Rate: {hr_rate}%")
 
 # -----------------------------------------------
 # Visualizations
 # -----------------------------------------------
-
 # readmission rate by age group
 plt.figure(figsize=(10, 5))
 plot_data = age_summary.sort_values('readmission_rate_%')
@@ -128,7 +124,6 @@ plt.title('30-Day Readmission Rate by Age Group')
 plt.tight_layout()
 plt.savefig('readmission_by_age.png')
 plt.show()
-
 
 # readmission rate by admission type
 plt.figure(figsize=(9, 5))
