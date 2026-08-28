@@ -1,7 +1,7 @@
 # Diabetes Patient Readmission Risk Analysis
 
 ## Overview
-Analyzed 101,766 diabetic patient encounters from 130 US hospitals to find patterns behind 30-day hospital readmissions. Built the full analysis across **SQL, Python,SAS, and Power BI** — cleaning, KPI calculation, risk stratification, and an interactive dashboard.
+Analyzed 101,766 diabetic patient encounters from 130 US hospitals to find patterns behind 30-day hospital readmissions. Built the full analysis across **SQL, Python and Power BI** — cleaning, KPI calculation, risk stratification, and an interactive dashboard.
 
 ---
 
@@ -21,12 +21,12 @@ Columns used: `patient_nbr`, `age`, `admission_type_id`, `discharge_disposition_
 - Built a rule-based high-risk flag (elderly + emergency admission + stay ≥7 days) — descriptive risk stratification, not a predictive ML model
 - Used window functions in SQL (`RANK() OVER`, running totals) for patient-level and cohort-level ranking
 - Built a Power BI dashboard with filters for age, gender, and medical specialty
-- Ported the full pipeline across SQL, Python (Pandas/Matplotlib),and SAS (PROC SQL/PROC MEANS/PROC SGPLOT)
+- Ported the full pipeline across SQL, Python (Pandas/Matplotlib).
 
 ---
 
 ## Readmission Definition
-Readmission rate is reported using the **strict 30-day definition** (`readmitted == '<30'`) as the headline metric everywhere — README, SQL, Python,and SAS all use this same definition. A broader "any readmission" metric (`readmitted <> 'NO'`, includes >30-day readmits) is also available in the SQL file, labeled separately so it isn't confused with the 30-day figure.
+Readmission rate is reported using the **strict 30-day definition** (`readmitted == '<30'`) as the headline metric everywhere — README, SQL, Python  use this same definition. A broader "any readmission" metric (`readmitted <> 'NO'`, includes >30-day readmits) is also available in the SQL file, labeled separately so it isn't confused with the 30-day figure.
 
 ---
 
@@ -61,7 +61,6 @@ Readmission rate is reported using the **strict 30-day definition** (`readmitted
 ```
 ├── diabetes.sql                 — SQL queries (readmission KPIs, age/specialty breakdowns, window functions)
 ├── diabetic_analysis.py         — Python EDA script (cleaning, KPI calc, visualizations)
-├── SAS file                     — SAS port (PROC SQL/PROC MEANS/PROC SGPLOT)
 ├── diabetes.bi.pbix             — Power BI dashboard
 ├── diabetes.csv.xlsx            — raw dataset
 ├── readmission_by_age.png       — Readmission rate by age group chart
