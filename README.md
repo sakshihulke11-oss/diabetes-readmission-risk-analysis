@@ -1,7 +1,13 @@
 # Diabetes Patient Readmission Risk Analysis
 
 ## Overview
-Analyzed 101,766 diabetic patient encounters from 130 US hospitals to find patterns behind 30-day hospital readmissions. Built the full analysis across **SQL, Python and Power BI** — cleaning, KPI calculation, risk stratification, and an interactive dashboard.
+
+This project analyzes hospital records of diabetic patients to understand patterns associated with hospital readmission and healthcare utilization.
+
+The analysis was performed using **Python, SQL and Power BI**. Python was used for data cleaning and exploratory analysis, SQL was used to query and analyze the hospital data, and Power BI was used to create an interactive dashboard for reporting key metrics and trends.
+
+The main focus of the project is **30-day hospital readmission**, along with factors such as age, gender, admission type, length of stay, previous inpatient visits, medication count and medical specialty.
+
 
 ---
 
@@ -12,58 +18,99 @@ Analyzed 101,766 diabetic patient encounters from 130 US hospitals to find patte
 
 Columns used: `patient_nbr`, `age`, `admission_type_id`, `discharge_disposition_id`, `time_in_hospital`, `number_diagnoses`, `change`, `readmitted`
 
----
 
-## What I did
-- Recoded `?` placeholder values to missing, dropped columns with excessive missingness (`weight`, `payer_code`, `medical_specialty`)
-- Deduplicated to first encounter per patient, and **excluded expired/hospice discharges** (codes 11, 13, 14, 19, 20, 21) before computing readmission rates — patients who died or entered hospice can't be readmitted, so leaving them in would understate the true rate
-- Calculated readmission KPIs, age-group and admission-type breakdowns, and length-of-stay patterns
-- Built a rule-based high-risk flag (elderly + emergency admission + stay ≥7 days) — descriptive risk stratification, not a predictive ML model
-- Used window functions in SQL (`RANK() OVER`, running totals) for patient-level and cohort-level ranking
-- Built a Power BI dashboard with filters for age, gender, and medical specialty
-- Ported the full pipeline across SQL, Python (Pandas/Matplotlib).
+### Dataset Details
 
----
+- 101,766 hospital encounters
+- 50 variables
+- Patient demographic information
+- Admission and discharge information
+- Hospital stay information
+- Diagnosis information
+- Medication information
+- Previous hospital utilization
+- Readmission information
 
-## Readmission Definition
-Readmission rate is reported using the **strict 30-day definition** (`readmitted == '<30'`) as the headline metric everywhere — README, SQL, Python  use this same definition. A broader "any readmission" metric (`readmitted <> 'NO'`, includes >30-day readmits) is also available in the SQL file, labeled separately so it isn't confused with the 30-day figure.
+### Important Variables
 
----
-
-## Dashboard KPIs
-| Metric                              | Value     |
-| ------------------------------------ | --------- |
-| Raw Encounters                       | 101,766   |
-| Unique Patients (after dedup)        | 71,518    |
-| Encounters After Cleaning*           | 69,973    |
-| Average Length of Stay               | 4.27 days |
-| Readmitted Encounters (30-day)       | 6,277     |
-| Readmission Rate (30-day)            | 8.97%     |
-| Readmission Rate (any, broad def)    | 40.73%    |
-
-*After deduplication (first encounter per patient) and exclusion of expired/hospice discharges.
+- `patient_nbr` - Patient identifier
+- `age` - Patient age group
+- `gender` - Patient gender
+- `admission_type_id` - Type of admission
+- `discharge_disposition_id` - Discharge information
+- `time_in_hospital` - Number of days spent in hospital
+- `number_inpatient` - Number of previous inpatient visits
+- `num_medications` - Number of medications
+- `medical_specialty` - Medical specialty
+- `readmitted` - Readmission status
 
 ---
 
-## Key Findings
-- Age group and admission-type patterns in readmission rate (`readmission_by_age.png`, `readmission_by_admission.png`)
-- Length of stay alone was not a strong predictor — discharge planning plays a bigger role
-- The high-risk subgroup (elderly + emergency admission + stay ≥7 days) shows a meaningfully higher readmission rate than the overall population
+## Project Objective
+
+The main objective is to understand patterns in diabetic patient readmission and hospital utilization.
+
+The analysis looks at:
+
+- Overall 30-day readmission
+- Readmission across age groups
+- Readmission by gender
+- Readmission by admission type
+- Length of hospital stay and readmission
+- Previous inpatient visits and readmission
+- Medication count and readmission
+- Readmission across medical specialties
+- Hospital utilization patterns
 
 ---
+
+## Data Cleaning & Preparation
+
+Python was used to prepare the data before analysis.
+
+The following steps were performed:
+
+- Loaded the hospital dataset using Pandas
+- Checked the dataset structure and initial records
+- Replaced `?` values with missing values
+- Removed columns with a large amount of missing information:
+  - `weight`
+  - `payer_code`
+  - `medical_specialty`
+- Removed duplicate patient records by keeping the first encounter for each patient
+- Excluded discharge records associated with death or hospice:
+  - 11
+  - 13
+  - 14
+  - 19
+  - 20
+  - 21
+- Created a 30-day readmission indicator based on the `readmitted` variable
+
+After these cleaning steps, the Python analysis dataset contained approximately **69,973 records**.
+
+---
+
+## Python Analysis
+
+Python was used for data cleaning, transformation and exploratory analysis.
+
+### 30-Day Readmission
+
+A 30-day readmission flag was created using:
+
+```text
+readmitted = '<30'
+
+
+
+
+
+
 
 ## Dashboard Preview
 ![Dashboard screenshot](IMG_20260213_232330.jpg)
 
 
 
-## Files
-```
-├── diabetes.sql                 — SQL queries (readmission KPIs, age/specialty breakdowns, window functions)
-├── diabetic_analysis.py         — Python EDA script (cleaning, KPI calc, visualizations)
-├── diabetes.bi.pbix             — Power BI dashboard
-├── diabetes.csv.xlsx            — raw dataset
-├── readmission_by_age.png       — Readmission rate by age group chart
-├── readmission_by_admission.png — Readmission rate by admission type chart
-├── IMG_20260213_232330.jpg      — Power BI dashboard screenshot
-```
+
